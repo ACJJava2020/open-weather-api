@@ -1,11 +1,5 @@
 package com.spring.restapi.models;
 
-/**
- * @author sahithi
- *Sep 6, 2018
- * 
- */
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,17 +13,19 @@ import org.springframework.context.annotation.Bean;
 public class Weather implements Serializable {
 
 	private static final long serialVersionUID = 7406210628182440902L;
-	
+
 	private String weatherDescription;
-	private double lon;
 	private String name;
-	private double lat;
-	
+	private double temperature;
+
+	//private double lon;
+	//private double lat;
+
 	@Bean
 	public Weather weather() {
 		return new Weather();
 	}
-	
+
 	public Weather() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -39,20 +35,10 @@ public class Weather implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public double getLat() {
-		return lat;
-	}
-
-	@JsonProperty("lat")
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-
-	
 	public String getName() {
 		return name;
 	}
-	
+
 	@JsonProperty("name")
 	public void setName(String name) {
 		this.name = name;
@@ -72,7 +58,33 @@ public class Weather implements Serializable {
 		setWeatherDescription((String) weather.get("description"));
 	}
 
-	@JsonProperty("lon")
+	public String getTemperature() {
+		return getTemperatureDigitFormatting(temperature) + " °F";
+	}
+
+	public void setTemperature(double temperatureKelvin) {
+		this.temperature = temperatureKelvin;
+	}
+
+	@JsonProperty("main")
+	public void setMain(Map<String, Object> main) {
+		double kelvinTemp = Double.parseDouble(main.get("temp").toString());
+		setTemperature(celsiusToFahrenheit(kelvinToCelsius(kelvinTemp)));
+	}
+
+	protected double celsiusToFahrenheit(double temperature) {
+		return  (temperature * 9/5.0) +32;
+	}
+
+	protected double kelvinToCelsius(double temperatureKelvin) {
+		return temperatureKelvin - 273.15;
+	}
+
+	protected String getTemperatureDigitFormatting(double temperature) {
+		return String.format("%4.2f", temperature);
+	}
+
+	/*@JsonProperty("lon")
 	public double getLon() {
 		return lon;
 	}
@@ -81,14 +93,24 @@ public class Weather implements Serializable {
 	public void setLon(double lon) {
 		this.lon = lon;
 	}
-	
+
 	@JsonProperty("coord")
 	public void setCoord(Map<String, Object> coord) {
 		setLon((double) coord.get("lon"));
 		setLat((double) coord.get("lat"));
-		
+
+		public double getLat() {
+		return lat;
 	}
-	
-	
-	
+
+	@JsonProperty("lat")
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+
+	}*/
+
+
+
 }
