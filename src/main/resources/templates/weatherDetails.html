@@ -18,7 +18,7 @@
     			<th>Weather</th>
 				<th>Temperature</th>
 			</tr>
-			<tr th:each="weather : ${weatherData}" }>
+			<tr th:each="weather : ${weatherData}"}>
 				<td><span th:text="${weather.getName()}"></span></td>
 				<td><span th:text="${weather.getWeatherDescription()}"></span></td>
 				<td><span th:text="${weather.getTemperature()}"></span></td>

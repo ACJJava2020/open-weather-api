@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Bean;
 
@@ -49,7 +51,10 @@ public class Weather implements Serializable {
 	}
 
 	public void setWeatherDescription(String weatherDescription) {
-		this.weatherDescription = weatherDescription;
+		String desc = Arrays.stream(weatherDescription.split("\\s+"))
+				.map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
+				.collect(Collectors.joining(" "));
+		this.weatherDescription = desc;
 	}
 
 	@JsonProperty("weather")
